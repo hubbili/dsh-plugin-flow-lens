@@ -6,6 +6,32 @@ kind: "package-bundle"
 
 [English](README.md) | 中文
 
+## 独立构建与安装
+
+<a id="build-and-install"></a>
+
+需要 Node `^22.19.0 || >=24.0.0`、pnpm `11.7.0`，以及现有的 DeepSeek Harness Web 安装。插件针对 Harness `0.1.6-alpha.2`；尚未稳定的 API 可能随宿主版本变化。
+
+```sh
+git clone https://github.com/hubbili/dsh-plugin-flow-lens.git
+cd dsh-plugin-flow-lens
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run test
+pnpm run lint
+pnpm run build
+pnpm pack --out artifacts/flow-lens.tgz
+dsh plugin --profile web add ./artifacts/flow-lens.tgz
+dsh web --no-open
+```
+
+使用源码仓库的 `pnpm dsh` 启动时，请在 Harness 目录运行等效命令，并使用压缩包和覆盖配置的绝对路径。每次修改后都需要重新构建、打包、安装并重启宿主。
+
+本插件可独立安装。另一个插件位于 [dsh-plugin-llm-wire-debug](https://github.com/hubbili/dsh-plugin-llm-wire-debug)。
+
+![flow-lens preview](docs/assets/flow-overview.png)
+![flow-lens preview](docs/assets/flow-prompt.png)
+
 ## 摘要
 
 沿输入、提示词、模型请求、响应、工具和继续/结束阅读选中的轮次。查看高亮提示词、图节点、原始事件和精选扩展点地图。复制源码路径，在 WebStorm 阅读另一个 Harness 源码目录。页面读取已加载的 Session 记录，不追踪每个函数或插件回调。
@@ -19,7 +45,7 @@ kind: "package-bundle"
 
 ## 使用此包
 
-按仓库的[构建与本地压缩包安装](../../README.zh.md#构建和安装)操作，再选择已有记录的 Session，在“轨迹”后打开“执行图”。默认显示学习导览；节点深链接打开执行图。[内置补丁](cordis.patch.yml)只添加此视图。JSON 检查器可能包含私密提示词、参数和结果，请勿分享真实捕获数据。
+按仓库的[构建与本地压缩包安装](#build-and-install)操作，再选择已有记录的 Session，在“轨迹”后打开“执行图”。默认显示学习导览；节点深链接打开执行图。[内置补丁](cordis.patch.yml)只添加此视图。JSON 检查器可能包含私密提示词、参数和结果，请勿分享真实捕获数据。
 
 ## 理解实现
 

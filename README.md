@@ -6,6 +6,30 @@ kind: "package-bundle"
 
 English | [中文](README.zh.md)
 
+## Build and install
+
+Requires Node `^22.19.0 || >=24.0.0`, pnpm `11.7.0`, and an existing DeepSeek Harness Web installation. The plugin targets Harness `0.1.6-alpha.2`; its pre-stable APIs can change between host versions.
+
+```sh
+git clone https://github.com/hubbili/dsh-plugin-flow-lens.git
+cd dsh-plugin-flow-lens
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm run test
+pnpm run lint
+pnpm run build
+pnpm pack --out artifacts/flow-lens.tgz
+dsh plugin --profile web add ./artifacts/flow-lens.tgz
+dsh web --no-open
+```
+
+For source-based `pnpm dsh` launches, run the equivalent commands in the Harness checkout using absolute archive and overlay paths. After changes, rebuild, repack, reinstall, and restart the host.
+
+Install this plugin independently. The companion plugin is [dsh-plugin-llm-wire-debug](https://github.com/hubbili/dsh-plugin-llm-wire-debug).
+
+![flow-lens preview](docs/assets/flow-overview.png)
+![flow-lens preview](docs/assets/flow-prompt.png)
+
 ## Summary
 
 Follow a selected turn through input, prompts, model requests, responses, tools, and continuation. Inspect highlighted prompts, graph nodes, raw events, and a curated extension map. Copy source paths for reading a separate Harness checkout in WebStorm. This view reads loaded Session records; it does not trace every function or plugin callback.
@@ -19,7 +43,7 @@ Follow a selected turn through input, prompts, model requests, responses, tools,
 
 ## Use this package
 
-Follow the repository's [build and local archive installation](../../README.md#build-and-install), then select a recorded Session and open Flow Lens after Trajectory. Learning guide is the default; node deep links open the graph. The package's [bundle patch](cordis.patch.yml) adds only this view. JSON inspectors can contain private prompts, arguments and results; do not share real captured data.
+Follow the repository's [build and local archive installation](#build-and-install), then select a recorded Session and open Flow Lens after Trajectory. Learning guide is the default; node deep links open the graph. The package's [bundle patch](cordis.patch.yml) adds only this view. JSON inspectors can contain private prompts, arguments and results; do not share real captured data.
 
 ## Understand the implementation
 
